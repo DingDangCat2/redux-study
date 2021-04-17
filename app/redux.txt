@@ -1,0 +1,45 @@
+1.数组的方法中，pop,push ,shift,unshift，slice（）都是在原数组上进行操作。不产生新的数据副本。其他的都会生成数组副本，不会改变原数组。
+2.基本类型值在内存中是存储在栈区的，栈区存储的就是该值。引用类型的值实际保存在堆区，栈区保存的是一个堆区的地址的引用。
+3.深拷贝：json.parse(json.stringify())
+object.assign()在对象中不包含二级对象时为深拷贝，否则，二级属性为浅拷贝。
+
+
+
+redux:
+redux主要由三部分组成：1.store——起到一个盒子仓库的作用，所有reducer中的状态的返回都存储在这个盒子中。2.reducer——管理所有的操作，以及所有的状态应该怎么变化，用户的action通过reducer
+进行响应。3.action——由用户发起action到reducer，reducer对action作出相应的行为！(store.dispatch分发行为。该行为至少应该包含action.type)
+1.引入redux
+2.创建store，creacteStore(reducer);
+3.创建reducer，其本质是一个纯函数（其返回结果只能收到传入参数的影响，不能存在其他因素改变其返回值！）
+接受两个参数——state，和用户通过dispatch分发的action。在reducer中应根据action.type对state作出更改后，返回新的state给store。
+4.store.getState()——能拿到reducer中的状态数据。
+
+
+react-redux:
+1.Provider——提供一个接口，包裹在该组件中的所有组件都可使用store中的状态。
+  <Provider store={store}>-----其store还是由redux创建。
+    <List />
+    </Provider>
+2.connect——使得store中的所有状态都能在当前组件中使用，保证该组件分发的action能在reducer中响应。
+export default connect(ListPage,increasePage)(Lists）
+接收两个参数：
+1.第一个参数：组件中能获取到store中的状态数据，供页面显示。
+const ListPage=(state)=>{
+    return {
+        'value':state.list
+    }
+}——组件中使用这些数据时用this.props.就可获取。实质是将这些状态数据映射成属性。
+2.第二个参数：分发action,组件中用属性映射这些方法。
+const increasePage=(dispatch)=>{
+    return{
+        click(e){
+            e.preventDefault();
+            console.log(e.target.input.value);
+            let action={
+                'type':'ADD_PAGE',
+                'value':e.target.input.value
+            }
+            dispatch(action);
+        }
+    }
+}
